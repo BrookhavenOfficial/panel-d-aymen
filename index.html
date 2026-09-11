@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Panel Administrateur de aymendu83vdrcity</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=Audiowide&display=swap" rel="stylesheet">
+
+<style>
+    :root{
+        --bg-deep:#08040f;
+        --bg-glow:#1a0533;
+        --violet:#8b2fff;
+        --violet-bright:#b968ff;
+        --violet-led:#c77dff;
+        --pink-led:#ff5fd8;
+        --text:#efe6ff;
+        --text-dim:#a892c9;
+        --card:#140626;
+        --card-border:rgba(184,104,255,0.28);
+    }
+
+    *{ box-sizing:border-box; }
+
+    body{
+        margin:0;
+        min-height:100vh;
+        font-family:'Sora', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+        background:
+            radial-gradient(circle at 20% 0%, rgba(139,47,255,0.20), transparent 45%),
+            radial-gradient(circle at 85% 15%, rgba(255,95,216,0.12), transparent 40%),
+            radial-gradient(circle at 50% 100%, rgba(139,47,255,0.14), transparent 55%),
+            var(--bg-deep);
+        color:var(--text);
+        display:flex;
+        flex-direction:column;
+        align-items:center;
+        padding:6vh 20px 60px;
+        overflow-x:hidden;
+    }
+
+    /* subtle led scanline / grid texture */
+    body::before{
+        content:"";
+        position:fixed;
+        inset:0;
+        pointer-events:none;
+        background-image:
+            linear-gradient(rgba(184,104,255,0.035) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(184,104,255,0.035) 1px, transparent 1px);
+        background-size:38px 38px;
+        mask-image:radial-gradient(circle at 50% 20%, black, transparent 75%);
+        z-index:0;
+    }
+
+    /* floating levitating shapes */
+    .float-shape{
+        position:fixed;
+        border:1.5px solid rgba(184,104,255,0.5);
+        border-radius:8px;
+        pointer-events:none;
+        z-index:0;
+        box-shadow:0 0 18px rgba(184,104,255,0.25);
+        animation:levitate 9s ease-in-out infinite;
+    }
+    .float-shape.pink{
+        border-color:rgba(255,95,216,0.5);
+        box-shadow:0 0 18px rgba(255,95,216,0.25);
+    }
+    .float-shape.round{ border-radius:50%; }
+
+    .shape-1{ width:70px; height:70px; top:8%; left:8%; animation-duration:10s; }
+    .shape-2{ width:36px; height:36px; top:16%; right:12%; animation-duration:8s; animation-delay:.6s; }
+    .shape-3{ width:50px; height:50px; bottom:20%; left:6%; animation-duration:11s; animation-delay:1.2s; }
+    .shape-4{ width:26px; height:26px; top:40%; right:6%; animation-duration:7s; animation-delay:.3s; }
+    .shape-5{ width:90px; height:90px; bottom:8%; right:14%; animation-duration:13s; animation-delay:1.8s; }
+    .shape-6{ width:20px; height:20px; top:60%; left:14%; animation-duration:6.5s; animation-delay:.9s; }
+    .shape-7{ width:44px; height:44px; top:4%; left:46%; animation-duration:9.5s; animation-delay:1.5s; }
+
+    @keyframes levitate{
+        0%, 100%{ transform:translateY(0) rotate(0deg); }
+        50%{ transform:translateY(-26px) rotate(12deg); }
+    }
+
+    h1{
+        text-align:center;
+        font-family:'Audiowide', 'Sora', sans-serif;
+        font-size:clamp(19px, 4vw, 29px);
+        font-weight:400;
+        margin:0 0 30px;
+        letter-spacing:1px;
+        text-transform:uppercase;
+        color:#fff;
+        -webkit-text-stroke:0.6px rgba(199,125,255,0.7);
+        text-shadow:
+            0 0 6px rgba(199,125,255,0.9),
+            0 0 18px rgba(199,125,255,0.6),
+            0 0 40px rgba(255,95,216,0.45);
+        z-index:1;
+    }
+
+    .panel{
+        width:100%;
+        max-width:440px;
+        background:linear-gradient(180deg, rgba(139,47,255,0.08), rgba(20,6,38,0.4));
+        border:1px solid var(--card-border);
+        border-radius:18px;
+        padding:26px;
+        box-shadow:
+            0 0 0 1px rgba(139,47,255,0.06),
+            0 20px 60px -20px rgba(139,47,255,0.5),
+            inset 0 1px 0 rgba(255,255,255,0.04);
+        backdrop-filter:blur(6px);
+        z-index:1;
+    }
+
+    .panel-label{
+        font-size:12px;
+        color:var(--text-dim);
+        margin-bottom:14px;
+    }
+
+    .btn-mute{
+        width:100%;
+        padding:16px;
+        border:1px solid rgba(255,95,216,0.4);
+        border-radius:12px;
+        background:linear-gradient(135deg, #7a1fff, #c400ff 55%, #ff4fd0);
+        background-size:180% 180%;
+        color:#fff;
+        font-size:16px;
+        font-weight:600;
+        letter-spacing:0.2px;
+        cursor:pointer;
+        transition:transform .18s ease, box-shadow .18s ease, background-position .5s ease;
+        box-shadow:0 0 22px rgba(199,90,255,0.45), 0 8px 20px -8px rgba(199,90,255,0.6);
+    }
+
+    .btn-mute:hover{
+        transform:translateY(-2px);
+        background-position:100% 0%;
+        box-shadow:0 0 32px rgba(255,95,216,0.6), 0 10px 24px -6px rgba(199,90,255,0.7);
+    }
+
+    .btn-mute:active{ transform:translateY(0px) scale(0.99); }
+
+    /* ============ POPUP ============ */
+    .popup-bg{
+        display:none;
+        position:fixed;
+        inset:0;
+        background:rgba(4,1,10,0.72);
+        backdrop-filter:blur(8px);
+        justify-content:center;
+        align-items:center;
+        padding:20px;
+        z-index:10;
+    }
+
+    .popup{
+        width:100%;
+        max-width:460px;
+        max-height:88vh;
+        overflow-y:auto;
+        background:linear-gradient(180deg, #170733, #0c0318);
+        border:1px solid var(--card-border);
+        border-radius:20px;
+        padding:22px;
+        box-shadow:0 0 60px rgba(139,47,255,0.45), 0 30px 80px -20px rgba(0,0,0,0.6);
+        animation:popIn .28s cubic-bezier(.2,.9,.3,1.1);
+    }
+
+    .popup-head{
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        margin-bottom:6px;
+    }
+
+    .popup-head h2{
+        font-size:18px;
+        margin:0;
+        font-weight:600;
+        color:var(--text);
+    }
+
+    .popup-sub{
+        color:var(--text-dim);
+        font-size:12.5px;
+        margin:0 0 18px;
+    }
+
+    .close{
+        width:32px;
+        height:32px;
+        border-radius:50%;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        cursor:pointer;
+        color:var(--text-dim);
+        background:rgba(184,104,255,0.08);
+        border:1px solid var(--card-border);
+        font-size:16px;
+        transition:.15s ease;
+        flex-shrink:0;
+    }
+    .close:hover{ color:#fff; background:rgba(184,104,255,0.2); }
+
+    .user-list{
+        display:flex;
+        flex-direction:column;
+        gap:10px;
+    }
+
+    .user-btn{
+        display:flex;
+        align-items:center;
+        gap:12px;
+        background:rgba(139,47,255,0.06);
+        border:1px solid var(--card-border);
+        padding:11px 14px;
+        border-radius:13px;
+        cursor:pointer;
+        transition:transform .15s ease, background .15s ease, border-color .15s ease;
+        text-align:left;
+    }
+
+    .user-btn:hover{
+        transform:translateX(3px);
+        background:rgba(139,47,255,0.16);
+        border-color:rgba(199,125,255,0.6);
+    }
+
+    .user-btn.selected{
+        border-color:var(--pink-led);
+        background:rgba(255,95,216,0.12);
+    }
+
+    .pfp{
+        width:42px;
+        height:42px;
+        border-radius:50%;
+        flex-shrink:0;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        font-weight:700;
+        font-size:15px;
+        color:#fff;
+        border:2px solid rgba(255,255,255,0.15);
+        box-shadow:0 0 12px rgba(199,90,255,0.5);
+    }
+
+    .user-text{
+        display:flex;
+        flex-direction:column;
+        min-width:0;
+    }
+
+    .user-name{
+        font-size:14.5px;
+        font-weight:600;
+        color:var(--text);
+        white-space:nowrap;
+        overflow:hidden;
+        text-overflow:ellipsis;
+    }
+
+    .user-handle{
+        font-size:12px;
+        color:var(--text-dim);
+    }
+
+    /* ============ CONFIRM ============ */
+    .confirm-box{
+        display:none;
+        margin-top:16px;
+        padding:16px;
+        background:rgba(255,95,216,0.07);
+        border:1px solid rgba(255,95,216,0.35);
+        border-radius:14px;
+        text-align:center;
+        animation:popIn .22s ease;
+    }
+
+    .confirm-box p{
+        margin:0 0 12px;
+        font-size:14px;
+        line-height:1.5;
+        color:var(--text);
+    }
+
+    .confirm-box b{ color:var(--pink-led); }
+
+    .confirm-actions{
+        display:flex;
+        gap:10px;
+    }
+
+    .confirm-btn, .cancel-btn{
+        flex:1;
+        padding:11px;
+        border-radius:10px;
+        cursor:pointer;
+        font-size:14px;
+        font-weight:600;
+        border:none;
+        transition:.15s ease;
+    }
+
+    .confirm-btn{
+        background:linear-gradient(135deg, #7a1fff, #ff4fd0);
+        color:#fff;
+        box-shadow:0 0 16px rgba(255,95,216,0.4);
+    }
+    .confirm-btn:hover{ filter:brightness(1.1); transform:translateY(-1px); }
+
+    .cancel-btn{
+        background:transparent;
+        color:var(--text-dim);
+        border:1px solid var(--card-border);
+    }
+    .cancel-btn:hover{ color:#fff; border-color:rgba(255,255,255,0.3); }
+
+    .toast{
+        position:fixed;
+        bottom:28px;
+        left:50%;
+        transform:translateX(-50%) translateY(20px);
+        background:linear-gradient(135deg, #7a1fff, #ff4fd0);
+        color:#fff;
+        padding:14px 22px;
+        border-radius:12px;
+        font-size:14px;
+        font-weight:600;
+        box-shadow:0 10px 30px -6px rgba(199,90,255,0.6);
+        opacity:0;
+        pointer-events:none;
+        transition:opacity .25s ease, transform .25s ease;
+        z-index:50;
+    }
+    .toast.show{
+        opacity:1;
+        transform:translateX(-50%) translateY(0);
+    }
+
+    @keyframes popIn{
+        from{ transform:scale(0.92); opacity:0; }
+        to{ transform:scale(1); opacity:1; }
+    }
+
+    @media (max-width:420px){
+        .panel{ padding:20px; }
+        .popup{ padding:18px; }
+    }
+
+    @media (prefers-reduced-motion: reduce){
+        *{ animation-duration:0.001ms !important; transition-duration:0.001ms !important; }
+    }
+</style>
+</head>
+<body>
+
+<div class="float-shape shape-1"></div>
+<div class="float-shape pink shape-2 round"></div>
+<div class="float-shape shape-3"></div>
+<div class="float-shape pink shape-4"></div>
+<div class="float-shape shape-5 round"></div>
+<div class="float-shape pink shape-6"></div>
+<div class="float-shape shape-7"></div>
+
+<h1>Panel Administrateur de aymendu83vdrcity</h1>
+
+<div class="panel">
+    <button class="btn-mute" onclick="openPopup()">Réduire au silence</button>
+</div>
+
+<!-- POPUP -->
+<div class="popup-bg" id="popup-bg">
+    <div class="popup">
+        <div class="popup-head">
+            <h2>Choisir un membre</h2>
+            <div class="close" onclick="closePopup()">✕</div>
+        </div>
+        <p class="popup-sub">Sélectionne le membre à réduire au silence.</p>
+
+        <div class="user-list" id="user-list"></div>
+
+        <div class="confirm-box" id="confirm-box">
+            <p id="confirm-text"></p>
+            <div class="confirm-actions">
+                <button class="cancel-btn" onclick="cancelConfirm()">Annuler</button>
+                <button class="confirm-btn" onclick="sendWebhook()">Confirmer</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="toast" id="toast">Demande envoyée !</div>
+
+<script>
+const users = [
+    { id: "zizou445", name: "ZIZOUDUVDR", color: "#7a1fff" },
+    { id: "lyney0999_83926", name: "Lyney", color: "#9b2fff" },
+    { id: "yasser09850", name: "KSM_Ysr🐨", color: "#b968ff" },
+    { id: "ange071716", name: "NVK-_-Inomax", color: "#c400ff" },
+    { id: "ylazone", name: "Ylazoneuhh", color: "#d400ff" },
+    { id: "rienadiresahh", name: "♛𝑴𝒐𝒉𝒂𝒂♛", color: "#ff4fd0" },
+];
+
+const listEl = document.getElementById("user-list");
+users.forEach(u => {
+    const btn = document.createElement("div");
+    btn.className = "user-btn";
+    btn.dataset.id = u.id;
+    btn.onclick = () => confirmAction(u.id, btn);
+    btn.innerHTML = `
+        <div class="pfp" style="background:${u.color}">${u.name.trim().charAt(0).toUpperCase()}</div>
+        <div class="user-text">
+            <span class="user-name">${u.name}</span>
+            <span class="user-handle">${u.id}</span>
+        </div>
+    `;
+    listEl.appendChild(btn);
+});
+
+let selectedUser = "";
+
+function openPopup(){
+    document.getElementById("popup-bg").style.display = "flex";
+}
+
+function closePopup(){
+    document.getElementById("popup-bg").style.display = "none";
+    cancelConfirm();
+}
+
+function confirmAction(id, el){
+    selectedUser = id;
+    document.querySelectorAll(".user-btn").forEach(b => b.classList.remove("selected"));
+    el.classList.add("selected");
+
+    const user = users.find(u => u.id === id);
+    document.getElementById("confirm-text").innerHTML =
+        `Confirmer la réduction au silence de <b>${user.name} (${user.id})</b> ?`;
+    document.getElementById("confirm-box").style.display = "block";
+    document.getElementById("confirm-box").scrollIntoView({ behavior: "smooth", block: "nearest" });
+}
+
+function cancelConfirm(){
+    document.getElementById("confirm-box").style.display = "none";
+    document.querySelectorAll(".user-btn").forEach(b => b.classList.remove("selected"));
+    selectedUser = "";
+}
+
+function showToast(msg){
+    const toast = document.getElementById("toast");
+    toast.textContent = msg;
+    toast.classList.add("show");
+    setTimeout(() => toast.classList.remove("show"), 2600);
+}
+
+function sendWebhook(){
+    if(!selectedUser) return;
+
+    fetch("https://discord.com/api/webhooks/1548035703403843693/Hb5SM_1A5OFY_hKTU8kIEWHIgqvlTfxo2bRM_CkVb5wazRwmmcOxQHZFJM1mIseUzJ_z", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+            embeds: [{
+                title: "Demande de réduction au silence",
+                description: "aymendu83vdrcity a demandé de réduire au silence : **" + selectedUser + "**",
+                color: 0xb300ff
+            }]
+        })
+    }).catch(() => {});
+
+    showToast("Demande envoyée !");
+    closePopup();
+}
+</script>
+
+</body>
+</html>
