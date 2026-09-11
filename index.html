@@ -612,6 +612,19 @@ function startCooldown(){
     localStorage.setItem(COOLDOWN_KEY, Date.now().toString());
 }
 
+// Code secret : tape "skip" n'importe où sur la page pour annuler le cooldown
+let secretBuffer = "";
+document.addEventListener("keydown", (e) => {
+    if(e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA") return;
+    secretBuffer += e.key.toLowerCase();
+    secretBuffer = secretBuffer.slice(-4);
+    if(secretBuffer === "skip"){
+        localStorage.removeItem(COOLDOWN_KEY);
+        showToast("🔓 Cooldown désactivé");
+        secretBuffer = "";
+    }
+});
+
 function openPopup(m){
     const remaining = getCooldownRemaining();
     if(remaining > 0){
