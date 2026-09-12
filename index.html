@@ -171,6 +171,8 @@
     }
 
     .action-card{
+        display:flex;
+        flex-direction:column;
         background:linear-gradient(180deg, rgba(139,47,255,0.08), rgba(20,6,38,0.4));
         border:1px solid var(--card-border);
         border-radius:16px;
@@ -215,11 +217,25 @@
         text-shadow:0 0 8px rgba(255,95,216,0.4);
     }
 
+    .action-card-price.popular{
+        color:var(--violet-led);
+        background:rgba(139,47,255,0.12);
+        border-color:rgba(139,47,255,0.4);
+        text-shadow:0 0 8px rgba(139,47,255,0.4);
+    }
+
+    .action-card-badges{
+        display:flex;
+        gap:6px;
+        flex-wrap:wrap;
+    }
+
     .action-card-desc{
         font-size:13.5px;
         color:var(--text-dim);
         line-height:1.5;
         margin:0 0 16px;
+        flex-grow:1;
     }
 
     .action-card-btn{
@@ -701,13 +717,13 @@
 
 <div class="action-cards">
     <div class="action-card">
-        <p class="action-card-title">Réduire au silence <span class="action-card-price">10.000$</span></p>
+        <p class="action-card-title">Réduire au silence <span class="action-card-badges"><span class="action-card-price popular">Populaire</span><span class="action-card-price">10.000$</span></span></p>
         <p class="action-card-desc">Réduire au silence 5 minutes un membre.</p>
         <button class="action-card-btn" onclick="openPopup('mute')">Utiliser</button>
     </div>
 
     <div class="action-card">
-        <p class="action-card-title">Surnommer <span class="action-card-price">5.000$</span></p>
+        <p class="action-card-title">Surnommer <span class="action-card-price">10.000$</span></p>
         <p class="action-card-desc">Modifie le pseudo d'un membre.</p>
         <button class="action-card-btn" onclick="openPopup('nickname')">Utiliser</button>
     </div>
@@ -716,6 +732,12 @@
         <p class="action-card-title">Déplacer <span class="action-card-price">5.000$</span></p>
         <p class="action-card-desc">Déplace un membre vers un autre salon vocal de la catégorie.</p>
         <button class="action-card-btn" onclick="openPopup('move')">Utiliser</button>
+    </div>
+
+    <div class="action-card">
+        <p class="action-card-title">Expulser <span class="action-card-price">20.000$</span></p>
+        <p class="action-card-desc">Permet d'expulser un membre.</p>
+        <button class="action-card-btn" onclick="openPopup('kick')">Utiliser</button>
     </div>
 </div>
 
@@ -873,7 +895,8 @@ function openPopup(m){
     const subs = {
         mute: "Sélectionne le membre à réduire au silence.",
         nickname: "Sélectionne le membre à surnommer.",
-        move: "Sélectionne le membre à déplacer."
+        move: "Sélectionne le membre à déplacer.",
+        kick: "Sélectionne le membre à expulser."
     };
     document.getElementById("popup-sub").textContent = subs[mode];
     document.getElementById("user-list").style.display = "flex";
@@ -897,6 +920,13 @@ function confirmAction(id, el){
         document.getElementById("voice-list").style.display = "none";
         document.getElementById("confirm-text").innerHTML =
             `Confirmer la réduction au silence de <b>${user.name} (${user.id})</b> ?`;
+        document.getElementById("confirm-box").style.display = "block";
+        document.getElementById("confirm-box").scrollIntoView({ behavior: "smooth", block: "nearest" });
+    } else if(mode === "kick"){
+        document.getElementById("nickname-box").style.display = "none";
+        document.getElementById("voice-list").style.display = "none";
+        document.getElementById("confirm-text").innerHTML =
+            `Confirmer l'expulsion de <b>${user.name} (${user.id})</b> ?`;
         document.getElementById("confirm-box").style.display = "block";
         document.getElementById("confirm-box").scrollIntoView({ behavior: "smooth", block: "nearest" });
     } else if(mode === "nickname"){
@@ -998,6 +1028,12 @@ function sendWebhook(){
             title: "Demande de déplacement",
             description: "aymendu83vdrcity a demandé de déplacer **" + selectedUser + "** vers le salon **" + voice.name + "**",
             color: 0x8b2fff
+        };
+    } else if(mode === "kick"){
+        embed = {
+            title: "Demande d'expulsion",
+            description: "aymendu83vdrcity a demandé d'expulser : **" + selectedUser + "**",
+            color: 0xff2f4f
         };
     }
 
