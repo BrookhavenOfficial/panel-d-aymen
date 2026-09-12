@@ -196,6 +196,22 @@
         color:var(--text);
         margin:0 0 6px;
         letter-spacing:0.2px;
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        gap:10px;
+    }
+
+    .action-card-price{
+        font-size:12px;
+        font-weight:700;
+        color:var(--pink-led);
+        background:rgba(255,95,216,0.1);
+        border:1px solid rgba(255,95,216,0.35);
+        padding:4px 10px;
+        border-radius:20px;
+        white-space:nowrap;
+        text-shadow:0 0 8px rgba(255,95,216,0.4);
     }
 
     .action-card-desc{
@@ -684,19 +700,19 @@
 
 <div class="action-cards">
     <div class="action-card">
-        <p class="action-card-title">Réduire au silence</p>
+        <p class="action-card-title">Réduire au silence <span class="action-card-price">10.000$</span></p>
         <p class="action-card-desc">Réduire au silence 5 minutes un membre.</p>
         <button class="action-card-btn" onclick="openPopup('mute')">Utiliser</button>
     </div>
 
     <div class="action-card">
-        <p class="action-card-title">Surnommer</p>
+        <p class="action-card-title">Surnommer <span class="action-card-price">5.000$</span></p>
         <p class="action-card-desc">Modifie le pseudo d'un membre.</p>
         <button class="action-card-btn" onclick="openPopup('nickname')">Utiliser</button>
     </div>
 
     <div class="action-card">
-        <p class="action-card-title">Déplacer</p>
+        <p class="action-card-title">Déplacer <span class="action-card-price">5.000$</span></p>
         <p class="action-card-desc">Déplace un membre vers un autre salon vocal de la catégorie.</p>
         <button class="action-card-btn" onclick="openPopup('move')">Utiliser</button>
     </div>
