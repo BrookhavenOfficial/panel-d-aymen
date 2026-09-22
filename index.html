@@ -199,10 +199,6 @@
         color:var(--text);
         margin:0 0 6px;
         letter-spacing:0.2px;
-        display:flex;
-        align-items:center;
-        justify-content:space-between;
-        gap:10px;
     }
 
     .action-card-price{
@@ -224,10 +220,75 @@
         text-shadow:0 0 8px rgba(139,47,255,0.4);
     }
 
+    .action-card-price.corrupted{
+        color:#ff2b3d;
+        background:rgba(255,20,30,0.12);
+        border-color:rgba(255,40,50,0.55);
+        text-shadow:0 0 8px rgba(255,40,50,0.7);
+        position:relative;
+        animation:glitchFlicker 2.6s infinite;
+    }
+
+    .action-card-price.corrupted s{
+        opacity:0.6;
+        text-decoration-color:rgba(255,80,90,0.8);
+    }
+
+    @keyframes glitchFlicker{
+        0%, 92%, 100%{
+            opacity:1;
+            transform:translate(0,0);
+            text-shadow:0 0 8px rgba(255,40,50,0.7);
+        }
+        93%{
+            opacity:.6;
+            transform:translate(-1px,0);
+            text-shadow:2px 0 0 rgba(0,255,255,0.5), -2px 0 0 rgba(255,0,80,0.6);
+        }
+        94%{
+            opacity:1;
+            transform:translate(1px,0);
+        }
+        95%{
+            opacity:.4;
+            transform:translate(-2px,1px);
+            text-shadow:-2px 0 0 rgba(0,255,255,0.5), 2px 0 0 rgba(255,0,80,0.6);
+        }
+        96%{
+            opacity:1;
+            transform:translate(0,0);
+        }
+    }
+
+    .corruption-banner{
+        width:100%;
+        max-width:640px;
+        margin:0 auto 22px;
+        text-align:center;
+        padding:10px 16px;
+        border:1px solid rgba(255,40,50,0.5);
+        border-radius:12px;
+        background:rgba(255,20,30,0.08);
+        color:#ff5b68;
+        font-size:12.5px;
+        font-weight:700;
+        letter-spacing:0.4px;
+        text-transform:uppercase;
+        text-shadow:0 0 8px rgba(255,40,50,0.6);
+        animation:glitchFlicker 2.6s infinite, bannerPulse 2.4s ease-in-out infinite;
+        z-index:1;
+    }
+
+    @keyframes bannerPulse{
+        0%, 100%{ box-shadow:0 0 12px rgba(255,40,50,0.25); }
+        50%{ box-shadow:0 0 24px rgba(255,40,50,0.5); }
+    }
+
     .action-card-badges{
         display:flex;
         gap:6px;
         flex-wrap:wrap;
+        margin-bottom:10px;
     }
 
     .action-card-desc{
@@ -571,6 +632,37 @@
         box-shadow:0 10px 30px -6px rgba(200,30,30,0.5), 0 0 18px rgba(255,60,60,0.3);
     }
 
+    /* ============ CORRUPTION POPUP ============ */
+    .corruption-popup{
+        background:linear-gradient(180deg, #2a0509, #14030a);
+        border:1px solid rgba(255,40,50,0.5);
+        box-shadow:0 0 60px rgba(255,30,40,0.45), 0 30px 80px -20px rgba(0,0,0,0.6);
+    }
+
+    .corruption-title{
+        font-size:16.5px;
+        font-weight:700;
+        color:#ff5b68;
+        text-shadow:0 0 8px rgba(255,40,50,0.6);
+        line-height:1.4;
+    }
+
+    .corruption-desc{
+        font-size:13.5px;
+        color:#e9c9cb;
+        line-height:1.6;
+        margin:0 0 14px;
+    }
+
+    .corruption-desc b{ color:#ff8a90; }
+
+    .corruption-close-btn{
+        width:100%;
+        margin-top:4px;
+        background:linear-gradient(135deg, #b30020, #ff2b3d 55%, #ff7a5c);
+        box-shadow:0 0 16px rgba(255,40,50,0.45);
+    }
+
     @keyframes popIn{
         from{ transform:scale(0.92); opacity:0; }
         to{ transform:scale(1); opacity:1; }
@@ -596,7 +688,7 @@
         justify-content:center;
         gap:22px;
         background:
-            radial-gradient(circle at 50% 40%, rgba(139,47,255,0.25), transparent 55%),
+            radial-gradient(circle at 50% 40%, rgba(255,20,30,0.28), transparent 55%),
             var(--bg-deep);
         transition:opacity .7s ease, visibility .7s ease;
     }
@@ -614,6 +706,7 @@
         display:flex;
         align-items:center;
         justify-content:center;
+        animation:glitchShake 3s infinite;
     }
 
     .splash-ring::before{
@@ -622,10 +715,10 @@
         inset:-10px;
         border-radius:50%;
         border:2px solid transparent;
-        border-top-color:var(--violet-led);
-        border-right-color:var(--pink-led);
-        animation:spin 2.2s linear infinite;
-        box-shadow:0 0 24px rgba(199,125,255,0.5);
+        border-top-color:#ff2b3d;
+        border-right-color:#ff7a5c;
+        animation:spin 1.4s linear infinite;
+        box-shadow:0 0 24px rgba(255,40,50,0.6);
     }
 
     .splash-logo{
@@ -633,9 +726,23 @@
         height:120px;
         border-radius:50%;
         object-fit:cover;
-        border:2px solid rgba(184,104,255,0.5);
-        box-shadow:0 0 30px rgba(184,104,255,0.55), 0 0 60px rgba(255,95,216,0.25);
-        animation:spin 6s linear infinite;
+        border:2px solid rgba(255,40,50,0.55);
+        box-shadow:0 0 30px rgba(255,40,50,0.6), 0 0 60px rgba(255,80,60,0.3);
+        animation:spin 6s linear infinite, glitchInvert 2.2s infinite;
+    }
+
+    @keyframes glitchShake{
+        0%, 88%, 100%{ transform:translate(0,0); filter:none; }
+        89%{ transform:translate(-3px,1px); }
+        90%{ transform:translate(3px,-1px); filter:hue-rotate(40deg); }
+        91%{ transform:translate(-2px,-2px); }
+        92%{ transform:translate(0,0); filter:none; }
+    }
+
+    @keyframes glitchInvert{
+        0%, 90%, 100%{ filter:none; }
+        91%{ filter:invert(0.15) saturate(2) hue-rotate(-20deg); }
+        93%{ filter:none; }
     }
 
     @keyframes spin{
@@ -650,17 +757,38 @@
 
     .splash-title{
         font-family:'Audiowide', 'Sora', sans-serif;
-        font-size:clamp(16px, 4vw, 22px);
+        font-size:clamp(15px, 3.8vw, 21px);
         text-transform:uppercase;
         letter-spacing:1px;
         color:#fff;
-        text-shadow:0 0 6px rgba(199,125,255,0.9), 0 0 18px rgba(199,125,255,0.6);
+        text-shadow:0 0 6px rgba(255,40,50,0.9), 0 0 18px rgba(255,40,50,0.6);
         margin:0 0 6px;
+        animation:textGlitch 2.6s infinite;
+        position:relative;
+    }
+
+    @keyframes textGlitch{
+        0%, 90%, 100%{
+            text-shadow:0 0 6px rgba(255,40,50,0.9), 0 0 18px rgba(255,40,50,0.6);
+            transform:translate(0,0);
+        }
+        91%{
+            text-shadow:2px 0 0 rgba(0,255,255,0.6), -2px 0 0 rgba(255,0,80,0.7);
+            transform:translate(-2px,0);
+        }
+        93%{
+            text-shadow:-2px 0 0 rgba(0,255,255,0.6), 2px 0 0 rgba(255,0,80,0.7);
+            transform:translate(2px,0);
+        }
+        95%{
+            text-shadow:0 0 6px rgba(255,40,50,0.9), 0 0 18px rgba(255,40,50,0.6);
+            transform:translate(0,0);
+        }
     }
 
     .splash-sub{
         font-size:13px;
-        color:var(--text-dim);
+        color:#ff9aa0;
         margin:0;
     }
 
@@ -668,7 +796,7 @@
         width:180px;
         height:3px;
         border-radius:3px;
-        background:rgba(184,104,255,0.15);
+        background:rgba(255,40,50,0.15);
         overflow:hidden;
         margin:14px auto 0;
     }
@@ -676,9 +804,9 @@
     .splash-bar-fill{
         height:100%;
         width:0%;
-        background:linear-gradient(90deg, var(--violet-led), var(--pink-led));
+        background:linear-gradient(90deg, #ff2b3d, #ff9a3d);
         animation:loadBar 5s linear forwards;
-        box-shadow:0 0 10px rgba(255,95,216,0.6);
+        box-shadow:0 0 10px rgba(255,60,50,0.7);
     }
 
     @keyframes loadBar{
@@ -694,9 +822,29 @@
         <img class="splash-logo" src="https://images-ext-1.discordapp.net/external/a9m1CnM0uQLqB6h6aaDGv5wxNbGRx8HI6viqB99wj5U/%3Fsize%3D256/https/cdn.discordapp.com/icons/1469776474625020098/f7f459e64f49a4a5c2c7cbc6768752bd.png?format=webp&quality=lossless" alt="Logo">
     </div>
     <div class="splash-text">
-        <p class="splash-title">Bienvenue sur ton panel aymendu83vdrcity</p>
+        <p class="splash-title">⚠ Événement Corruption en cours ⚠</p>
         <p class="splash-sub">Chargement de l'espace administrateur...</p>
         <div class="splash-bar"><div class="splash-bar-fill"></div></div>
+    </div>
+</div>
+
+<!-- POPUP ÉVÉNEMENT CORRUPTION -->
+<div class="popup-bg" id="corruption-bg">
+    <div class="popup corruption-popup">
+        <div class="popup-head">
+            <h2 class="corruption-title">Bienvenue dans l'événement corruption du panel</h2>
+            <div class="close" onclick="closeCorruptionPopup()">✕</div>
+        </div>
+        <p class="corruption-desc">
+            Le panel a été temporairement <b>corrompu</b>... Pendant toute la durée de cet événement,
+            <b>toutes les actions</b> (Réduire au silence, Surnommer, Déplacer, Expulser) sont
+            <b>100% gratuites</b>, comme tu peux le voir sur les étiquettes de prix barrées en rouge.
+        </p>
+        <p class="corruption-desc">
+            Le cooldown de 30 minutes entre chaque action reste actif, alors profites-en avant que
+            l'événement ne se termine et que les prix ne reviennent à la normale.
+        </p>
+        <button class="confirm-btn corruption-close-btn" onclick="closeCorruptionPopup()">J'ai compris</button>
     </div>
 </div>
 
@@ -715,27 +863,33 @@
 <img id="title-image" class="title-image" src="https://media.discordapp.net/attachments/1545488916222705725/1548249042394419230/content.png?ex=6aa65ec8&is=6aa50d48&hm=30ff1e540eeac4368d36d8732697826261ae78af5e13aae06f7a1d6bb2732f1a&=&format=webp&quality=lossless&width=1872&height=652" alt="Panneau Administrateur de aymendu83vdrcity" onerror="this.style.display='none'; document.getElementById('title-fallback').style.display='block';">
 <p class="title-credit">De aymendu83vdrcity</p>
 
+<div class="corruption-banner">⚠ Évènement Corruption — Tout est gratuit ⚠</div>
+
 <div class="action-cards">
     <div class="action-card">
-        <p class="action-card-title">Réduire au silence <span class="action-card-badges"><span class="action-card-price popular">Populaire</span><span class="action-card-price">10.000$</span></span></p>
+        <div class="action-card-badges"><span class="action-card-price popular">Populaire</span><span class="action-card-price corrupted"><s>10.000$</s> GRATUIT</span></div>
+        <p class="action-card-title">Réduire au silence</p>
         <p class="action-card-desc">Réduire au silence 5 minutes un membre.</p>
         <button class="action-card-btn" onclick="openPopup('mute')">Utiliser</button>
     </div>
 
     <div class="action-card">
-        <p class="action-card-title">Surnommer <span class="action-card-price">10.000$</span></p>
+        <div class="action-card-badges"><span class="action-card-price corrupted"><s>10.000$</s> GRATUIT</span></div>
+        <p class="action-card-title">Surnommer</p>
         <p class="action-card-desc">Modifie le pseudo d'un membre.</p>
         <button class="action-card-btn" onclick="openPopup('nickname')">Utiliser</button>
     </div>
 
     <div class="action-card">
-        <p class="action-card-title">Déplacer <span class="action-card-price">5.000$</span></p>
+        <div class="action-card-badges"><span class="action-card-price corrupted"><s>5.000$</s> GRATUIT</span></div>
+        <p class="action-card-title">Déplacer</p>
         <p class="action-card-desc">Déplace un membre vers un autre salon vocal de la catégorie.</p>
         <button class="action-card-btn" onclick="openPopup('move')">Utiliser</button>
     </div>
 
     <div class="action-card">
-        <p class="action-card-title">Expulser <span class="action-card-price">20.000$</span></p>
+        <div class="action-card-badges"><span class="action-card-price corrupted"><s>20.000$</s> GRATUIT</span></div>
+        <p class="action-card-title">Expulser</p>
         <p class="action-card-desc">Permet d'expulser un membre.</p>
         <button class="action-card-btn" onclick="openPopup('kick')">Utiliser</button>
     </div>
@@ -779,8 +933,15 @@
 window.addEventListener("load", () => {
     setTimeout(() => {
         document.getElementById("splash").classList.add("hide");
+        setTimeout(() => {
+            document.getElementById("corruption-bg").style.display = "flex";
+        }, 400);
     }, 5000);
 });
+
+function closeCorruptionPopup(){
+    document.getElementById("corruption-bg").style.display = "none";
+}
 
 const users = [
     { id: "zizou445", name: "ZIZOUDUVDR", color: "#7a1fff" },
